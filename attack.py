@@ -2,7 +2,7 @@
 
 from __future__ import division, print_function, absolute_import
 
-from turtlepower.world import TurtleWorld, PowerTurtle, wrap, clamp, noisy
+from world import TurtleWorld, PowerTurtle, wrap, clamp, noisy
 import time
 import queue
 import threading
