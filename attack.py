@@ -7,12 +7,23 @@ import time
 import queue
 import threading
 from random import choice, random
+import code
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 1000
 SPEED_MODIFIER = 1
 BOID_ACCELERATION = 0.1
 BOID_ROTATION = 4.0
+
+class InterpreterThread(threading.Thread):
+    def __init__(self, world):
+        super(InterpreterThread, self).__init__()
+        self.world = world
+
+    def run(self):
+        print ("Hello from thread")
+        WORLD = self.world
+        code.interact(local=locals())
 
 
 def remove_at_border(turtle, screen_width, screen_height, world):
@@ -203,10 +214,12 @@ class BossTurtle(EvilTurtle):
     pass
 
 
-class GoodSpider(PowerTurtle):
+class Spider(PowerTurtle):
     """Spider saving the world."""
-    pass
-
+    def callback(self, world):
+        pass
+    def handle_border(self, screen_width, screen_height):
+        return clamp(self, screen_width, screen_height)
 
 class EvilTurtleWorld(TurtleWorld):
     """The world window, infected by evil turtles."""
@@ -233,7 +246,7 @@ class EvilTurtleWorld(TurtleWorld):
         self.add_turtle(new_turtle)
         new_turtle.set_position()
         self.minions += 1
-        print("%s evil turtles" % self.minions)
+        #print("%s evil turtles" % self.minions)
         return new_turtle
 
 
@@ -247,6 +260,8 @@ def main():
     world = EvilTurtleWorld(
         SCREEN_WIDTH, SCREEN_HEIGHT,
         border_handler, "Attack of the Turtles")
+    t = InterpreterThread(world=world)
+    t.start()
     world.run(-1)
     print("End")
 
