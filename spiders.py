@@ -27,3 +27,10 @@ class Spider(BaseSpider):
         self.world.screen.register_shape('spider.gif')
         self.shape('spider.gif')
         #self.world.turtles.append(self)
+
+    def forward(self, distance):
+        self.penup()
+        self.pendown()
+        super(Spider, self).forward(distance)
+        self.penup()
+        self.pendown()

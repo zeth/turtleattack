@@ -63,6 +63,9 @@ class EvilTurtle(PowerTurtle):
             cur_y + 5)
         for thing_id in nearby_things:
             if canvas.type(thing_id) == 'line':
+                # Remove that bit of web
+                canvas.delete(thing_id)
+                # Turtle is caught
                 self.caught()
 
     def callback(self, world):
