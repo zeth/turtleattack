@@ -1,11 +1,41 @@
 """Evil Turtles."""
 
-from world import PowerTurtle
+from random import random, choice
+from world import PowerTurtle, wrap, noisy, clamp
+from constants import SPEED_MODIFIER, BOID_ACCELERATION, BOID_ROTATION
+from borders import bounce_at_border, remove_at_border
+
+class Soup(PowerTurtle):
+    def __init__(self, world, position):
+        self.starting_x, self.starting_y = position
+        super(Soup, self).__init__(world)
+
+    def setup(self):
+        """Setup the turtle."""
+        self.penup()
+        self.world.screen.register_shape('soup.gif')
+        self.shape('soup.gif')
+        self.set_position()
+
+    def set_position(self):
+        """Put the soup into position."""
+        self.setpos(self.starting_x, self.starting_y)
+
+    def callback(self, world):
+        """Check if eaten by spider perhaps."""
+        pass
+
+    def handle_border(self, screen_width, screen_height):
+        """Ghost turtles wrap like in Pac-Man."""
+        clamp(self, screen_width, screen_height)
+
 
 class EvilTurtle(PowerTurtle):
     """Evil Killer Turtle."""
 
-    assigned_speed = 2
+    def __init__(self, world):
+        super(EvilTurtle, self).__init__(world)
+        self.assigned_speed = 2
 
     def setup(self):
         """Setup the turtle."""
@@ -16,6 +46,29 @@ class EvilTurtle(PowerTurtle):
         """Put the turtle into position."""
         self.world.random_position(self)
 
+    def caught(self):
+        """Caught in the web."""
+        soup = Soup(self.world, self.pos())
+        self.world.turtles.append(soup)
+        self.world.remove_turtle(self)
+
+    def check_for_web(self):
+        """Check we are not hitting a web."""
+        cur_x, cur_y = self.pos()
+        canvas = self.world.screen.cv
+        nearby_things = canvas.find_overlapping(
+            cur_x - 5,
+            cur_y - 5,
+            cur_x + 5,
+            cur_y + 5)
+        for thing_id in nearby_things:
+            if canvas.type(thing_id) == 'line':
+                self.caught()
+
+    def callback(self, world):
+        self.check_for_web()
+        
+        
 
 class GhostTurtle(EvilTurtle):
     """Basic dumb turtle."""
@@ -26,6 +79,8 @@ class GhostTurtle(EvilTurtle):
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
+        super(GhostTurtle, self).callback(world)
+
         self.penup()
         self.forward(self.assigned_speed)
 
@@ -46,6 +101,7 @@ class WiddleTurtle(EvilTurtle):
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
+        super(WiddleTurtle, self).callback(world)
         self.penup()
         self.forward(self.assigned_speed)
         if self.clockwise:
@@ -73,6 +129,7 @@ class DisappearingTurtle(EvilTurtle):
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
+        super(DisappearingTurtle, self).callback(world)
         self.penup()
         self.forward(self.assigned_speed)
 
@@ -90,6 +147,7 @@ class BouncingTurtle(EvilTurtle):
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
+        super(BouncingTurtle, self).callback(world)
         self.penup()
         self.forward(self.assigned_speed)
 
@@ -111,6 +169,7 @@ class BoidTurtle(EvilTurtle):
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
+        super(BoidTurtle, self).callback(world)
         self.penup()
         neighbours = self.get_neighbours(60, 120)
         if not neighbours:
@@ -153,9 +212,6 @@ class BoidTurtle(EvilTurtle):
         self.turn_towards(target_heading, BOID_ROTATION)
         self.forward(self._move)
 
-class BossTurtle(EvilTurtle):
-    """Not dumd turtle."""
-    pass
 
 TURTLE_TYPES = [DisappearingTurtle, GhostTurtle, BoidTurtle,
                 BouncingTurtle, WiddleTurtle]

@@ -139,7 +139,9 @@ class TurtleWorld(object):
         for t in self.turtles[:]:
             t.callback(self)
             self.borders(t, self.width, self.height)
+        
         self.screen.update()
+
         self.fps += 1
         self.ticks -= 1
         if self.ticks == 0:
