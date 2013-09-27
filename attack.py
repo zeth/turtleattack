@@ -34,6 +34,8 @@ class EvilTurtleWorld(TurtleWorld):
         super(EvilTurtleWorld, self).__init__(width, height, borders, title)
         self.hatching = 0
         self.minions = 0
+        self.spiders = []
+        self.food_stores = 10
 
     def tick(self):
         super(EvilTurtleWorld, self).tick()
@@ -65,7 +67,7 @@ def main():
     t = InterpreterThread(world=world, spider=spider)
     t.start()
     world.run(-1)
-    print("End")
+    print("The game window has stopped.")
 
 if __name__ == '__main__':
     main()

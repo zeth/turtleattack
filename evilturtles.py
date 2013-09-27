@@ -6,9 +6,11 @@ from constants import SPEED_MODIFIER, BOID_ACCELERATION, BOID_ROTATION
 from borders import bounce_at_border, remove_at_border
 
 class Soup(PowerTurtle):
+    """An evil turtle that has been caught in spider web.""" 
     def __init__(self, world, position):
         self.starting_x, self.starting_y = position
         super(Soup, self).__init__(world)
+        self.radius = 10
 
     def setup(self):
         """Setup the turtle."""
@@ -23,12 +25,24 @@ class Soup(PowerTurtle):
 
     def callback(self, world):
         """Check if eaten by spider perhaps."""
-        pass
+        self.check_for_spider()
 
     def handle_border(self, screen_width, screen_height):
-        """Ghost turtles wrap like in Pac-Man."""
+        """Soup doesn't move."""
         clamp(self, screen_width, screen_height)
 
+    def check_for_spider(self):
+        """Check if there are any spiders nearby,
+        if so, get eaten."""
+        for spider in self.world.spiders:
+            if self.distance(spider) < self.radius:
+                self.eaten()
+
+    def eaten(self):
+        """The spider food is eaten."""
+        self.write("Yum yum")
+        self.world.remove_turtle(self)
+        self.world.food_stores += 1
 
 class EvilTurtle(PowerTurtle):
     """Evil Killer Turtle."""
@@ -41,6 +55,7 @@ class EvilTurtle(PowerTurtle):
         """Setup the turtle."""
         self.shape('turtle')
         self.penup()
+        self.radius = 10
 
     def set_position(self):
         """Put the turtle into position."""
@@ -50,7 +65,10 @@ class EvilTurtle(PowerTurtle):
         """Caught in the web."""
         soup = Soup(self.world, self.pos())
         self.world.turtles.append(soup)
-        self.world.remove_turtle(self)
+        try:
+            self.world.remove_turtle(self)
+        except ValueError:
+            print ("ValueError:", self)
 
     def check_for_web(self):
         """Check we are not hitting a web."""
@@ -61,17 +79,25 @@ class EvilTurtle(PowerTurtle):
             cur_y - 5,
             cur_x + 5,
             cur_y + 5)
-        for thing_id in nearby_things:
+        for thing_id in nearby_things[:]:
             if canvas.type(thing_id) == 'line':
                 # Remove that bit of web
                 canvas.delete(thing_id)
                 # Turtle is caught
                 self.caught()
 
+    def check_for_spider(self):
+        """Check if there are any spiders nearby,
+        if so, eat them."""
+        for spider in self.world.spiders:
+            if self.distance(spider) < self.radius:
+                spider.die()
+
     def callback(self, world):
+        self.check_for_spider()
         self.check_for_web()
         
-        
+    
 
 class GhostTurtle(EvilTurtle):
     """Basic dumb turtle."""
