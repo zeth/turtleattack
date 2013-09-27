@@ -67,7 +67,7 @@ def main():
     t = InterpreterThread(world=world, spider=spider)
     t.start()
     world.run(-1)
-    print("The game window has stopped.")
+    print("The game window has stopped.\nPress Ctrl+d to quit.")
 
 if __name__ == '__main__':
     main()

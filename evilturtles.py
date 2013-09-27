@@ -11,6 +11,7 @@ class Soup(PowerTurtle):
         self.starting_x, self.starting_y = position
         super(Soup, self).__init__(world)
         self.radius = 10
+        self.moulding = 0
 
     def setup(self):
         """Setup the turtle."""
@@ -24,8 +25,12 @@ class Soup(PowerTurtle):
         self.setpos(self.starting_x, self.starting_y)
 
     def callback(self, world):
-        """Check if eaten by spider perhaps."""
+        """Check if eaten by spider."""
         self.check_for_spider()
+        # Cannot wait forever
+        self.moulding += 1
+        if self.moulding == 500 / SPEED_MODIFIER:
+            self.world.remove_turtle(self)
 
     def handle_border(self, screen_width, screen_height):
         """Soup doesn't move."""
