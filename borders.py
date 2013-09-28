@@ -1,5 +1,6 @@
 """Functions for dealing with borders."""
 
+
 def remove_at_border(turtle, screen_width, screen_height, world):
     """Remove turtle if it hits the border."""
     old_x, old_y = turtle.pos()
@@ -26,6 +27,7 @@ def bounce_at_border(turtle, screen_width, screen_height):
     elif old_y < -screen_height / 2:
         new_heading = turtle.heading() - 180
         turtle.setheading(new_heading)
+
 
 def border_handler(turtle, screen_width, screen_height):
     """Let each turtle type handle its own border strategy."""

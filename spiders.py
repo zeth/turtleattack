@@ -6,15 +6,21 @@ from constants import X_OFFSET, Y_OFFSET
 from world import PowerTurtle, clamp
 from evilturtles import EvilTurtle, PredatorTurtle
 
+
 class BaseSpider(PowerTurtle):
     """Core spider functions."""
+
     def __init__(self, world):
         super(BaseSpider, self).__init__(world)
 
     def callback(self, world):
+        """Action upon tick."""
         pass
+
     def handle_border(self, screen_width, screen_height):
+        """Don't go outside the borders of the screen."""
         return clamp(self, screen_width, screen_height)
+
     def setup(self):
         super(BaseSpider, self).setup()
 
@@ -26,16 +32,17 @@ class Spider(BaseSpider):
         self.clear_insersion_site(world)
         super(Spider, self).__init__(world)
 
-    def clear_insersion_site(self, world):
+    @staticmethod
+    def clear_insersion_site(world):
         """0,0 should be clear of turtles beforehand."""
         for current_turtle in world.turtles:
             if isinstance(current_turtle, EvilTurtle):
                 if isinstance(current_turtle, PredatorTurtle):
-                    if current_turtle.distance(0,0) < 100:
+                    if current_turtle.distance(0, 0) < 100:
                         current_turtle.forward(100)
                         current_turtle.freeze()
                 else:
-                    if current_turtle.distance(0,0) < 30:
+                    if current_turtle.distance(0, 0) < 30:
                         current_turtle.forward(30)
 
     def setup(self):
@@ -58,18 +65,18 @@ class Spider(BaseSpider):
         """Remove the spider from the game."""
         self.write("A spider got eaten")
         self.draw_splat()
-        self.world.spiders.remove(self)        
+        self.world.spiders.remove(self)
         self.world.remove_turtle(self)
 
     def draw_splat(self):
         """Remains of a spider.
         Spiders do not have red blood but nevermind.
         Could be made a bit curvier.
-        
+
         Idea based on: http://stackoverflow.com/a/10603969
         """
-        x, y = self.pos()
+        xcoord, ycoord = self.pos()
         canvas = self.world.screen.cv
-        points = [(x + randrange(X_OFFSET), y + randrange(Y_OFFSET))
+        points = [(xcoord + randrange(X_OFFSET), ycoord + randrange(Y_OFFSET))
                   for point in range(randint(10, 30))]
         canvas.create_polygon(points, fill='red', outline='black')

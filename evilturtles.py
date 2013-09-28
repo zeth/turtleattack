@@ -5,8 +5,9 @@ from world import PowerTurtle, wrap, noisy, clamp
 from constants import SPEED_MODIFIER, BOID_ACCELERATION, BOID_ROTATION
 from borders import bounce_at_border, remove_at_border
 
+
 class Soup(PowerTurtle):
-    """An evil turtle that has been caught in spider web.""" 
+    """An evil turtle that has been caught in spider web."""
     def __init__(self, world, position):
         self.starting_x, self.starting_y = position
         super(Soup, self).__init__(world)
@@ -49,6 +50,7 @@ class Soup(PowerTurtle):
         self.world.remove_turtle(self)
         self.world.food_stores += 1
 
+
 class EvilTurtle(PowerTurtle):
     """Evil Killer Turtle."""
 
@@ -58,12 +60,13 @@ class EvilTurtle(PowerTurtle):
         self.frozen = False
         self.freeze_count = 0
         self.truecolor = None
+        self.radius = 10
 
     def setup(self):
         """Setup the turtle."""
         self.shape('turtle')
         self.penup()
-        self.radius = 10
+
 
     def set_position(self):
         """Put the turtle into position."""
@@ -76,7 +79,7 @@ class EvilTurtle(PowerTurtle):
         try:
             self.world.remove_turtle(self)
         except ValueError:
-            print ("ValueError:", self)
+            print("ValueError:", self)
 
     def check_for_web(self):
         """Check we are not hitting a web."""
@@ -121,6 +124,7 @@ class EvilTurtle(PowerTurtle):
         if self.freeze_count == 0:
             self.fillcolor(self.truecolor)
             self.frozen = False
+
 
 class GhostTurtle(EvilTurtle):
     """Basic dumb turtle."""
@@ -267,12 +271,11 @@ class BoidTurtle(EvilTurtle):
 
 class PredatorTurtle(EvilTurtle):
     """Turtle that hunts spiders."""
-    
+
     def setup(self):
         super(PredatorTurtle, self).setup()
         self.fillcolor('green')
         self.assigned_speed = random() * 7 * SPEED_MODIFIER
-        self.turn_max = 50
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
@@ -283,7 +286,9 @@ class PredatorTurtle(EvilTurtle):
 
     def hunt(self):
         """Find the closest spider."""
-        spider_distances = {self.distance(spider): spider for spider in self.world.spiders[:]}
+        spider_distances = {
+            self.distance(spider): spider for spider in
+            self.world.spiders[:]}
         try:
             target = spider_distances[min(spider_distances)]
         except ValueError:
@@ -291,7 +296,7 @@ class PredatorTurtle(EvilTurtle):
             # Just relax
             pass
         else:
-            self.turn_towards(self.towards(target), self.turn_max)
+            self.turn_towards(self.towards(target), 360)
             self.forward(self.assigned_speed)
 
     def handle_border(self, screen_width, screen_height):

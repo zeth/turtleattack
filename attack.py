@@ -2,30 +2,26 @@
 
 from __future__ import division, print_function, absolute_import
 
-import time
-import queue
 import threading
-from random import choice, random
+from random import choice
 import code
 
-from world import TurtleWorld, PowerTurtle, wrap, clamp, noisy
+from world import TurtleWorld, wrap
 from spiders import Spider
-from evilturtles import DisappearingTurtle, GhostTurtle, \
-    BoidTurtle, BouncingTurtle, WiddleTurtle, TURTLE_TYPES
-from constants import *
+from evilturtles import TURTLE_TYPES
+from constants import SPEED_MODIFIER, SCREEN_WIDTH, SCREEN_HEIGHT
 from borders import border_handler
 
 
 class InterpreterThread(threading.Thread):
+    """The thread containing the user's interpreter."""
     def __init__(self, world, spider):
         super(InterpreterThread, self).__init__()
         self.world = world
         self.spider = spider
 
     def run(self):
-        WORLD = self.world
-        spider = self.spider
-        code.interact(local=locals())
+        code.interact(local={'world': self.world, 'spider': self.spider})
 
 
 class EvilTurtleWorld(TurtleWorld):
@@ -69,8 +65,8 @@ def main():
         border_handler, "Attack of the Turtles")
     spider = Spider(world)
     world.turtles.append(spider)
-    t = InterpreterThread(world=world, spider=spider)
-    t.start()
+    ithread = InterpreterThread(world=world, spider=spider)
+    ithread.start()
     world.run(-1)
     print("The game window has stopped.\nPress Ctrl+d to quit.")
 

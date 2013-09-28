@@ -1,3 +1,14 @@
+"""
+This file is taken from the TurtlePower package.
+
+https://github.com/AllTheWayDown/turtlepower/blob/master/turtlepower/world.py
+
+This file is included directly since the target audience of children
+may not be able to deal with Python dependencies.
+
+Do not change this file directly but submit changes to the above github repo.
+"""
+
 from __future__ import division, print_function, absolute_import
 
 from random import randint, random, shuffle
@@ -139,7 +150,7 @@ class TurtleWorld(object):
         for t in self.turtles[:]:
             t.callback(self)
             self.borders(t, self.width, self.height)
-        
+
         self.screen.update()
 
         self.fps += 1
