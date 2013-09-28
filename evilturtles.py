@@ -55,6 +55,9 @@ class EvilTurtle(PowerTurtle):
     def __init__(self, world):
         super(EvilTurtle, self).__init__(world)
         self.assigned_speed = 2
+        self.frozen = False
+        self.freeze_count = 0
+        self.truecolor = None
 
     def setup(self):
         """Setup the turtle."""
@@ -99,10 +102,25 @@ class EvilTurtle(PowerTurtle):
                 spider.die()
 
     def callback(self, world):
-        self.check_for_spider()
-        self.check_for_web()
-        
-    
+        if self.frozen:
+            self.thaw()
+        else:
+            self.check_for_spider()
+            self.check_for_web()
+
+    def freeze(self):
+        """Freeze the turtle for a bit."""
+        self.frozen = True
+        self.truecolor = self.fillcolor()
+        self.fillcolor('white')
+        self.freeze_count = 300 / SPEED_MODIFIER
+
+    def thaw(self):
+        """Melt the turtle a bit."""
+        self.freeze_count -= 1
+        if self.freeze_count == 0:
+            self.fillcolor(self.truecolor)
+            self.frozen = False
 
 class GhostTurtle(EvilTurtle):
     """Basic dumb turtle."""
@@ -247,5 +265,39 @@ class BoidTurtle(EvilTurtle):
         self.forward(self._move)
 
 
+class PredatorTurtle(EvilTurtle):
+    """Turtle that hunts spiders."""
+    
+    def setup(self):
+        super(PredatorTurtle, self).setup()
+        self.fillcolor('green')
+        self.assigned_speed = random() * 7 * SPEED_MODIFIER
+        self.turn_max = 50
+
+    def callback(self, world):
+        """Move the turtle each tick of the game loop."""
+        super(PredatorTurtle, self).callback(world)
+        self.penup()
+        if not self.frozen:
+            self.hunt()
+
+    def hunt(self):
+        """Find the closest spider."""
+        spider_distances = {self.distance(spider): spider for spider in self.world.spiders[:]}
+        try:
+            target = spider_distances[min(spider_distances)]
+        except ValueError:
+            # I.e. no spider on screen at the moment
+            # Just relax
+            pass
+        else:
+            self.turn_towards(self.towards(target), self.turn_max)
+            self.forward(self.assigned_speed)
+
+    def handle_border(self, screen_width, screen_height):
+        """Bounce at the border."""
+        bounce_at_border(self, screen_width, screen_height)
+
+
 TURTLE_TYPES = [DisappearingTurtle, GhostTurtle, BoidTurtle,
-                BouncingTurtle, WiddleTurtle]
+                BouncingTurtle, WiddleTurtle, PredatorTurtle]

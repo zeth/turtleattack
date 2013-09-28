@@ -4,7 +4,7 @@ from random import randrange, randint
 
 from constants import X_OFFSET, Y_OFFSET
 from world import PowerTurtle, clamp
-
+from evilturtles import EvilTurtle, PredatorTurtle
 
 class BaseSpider(PowerTurtle):
     """Core spider functions."""
@@ -23,7 +23,20 @@ class Spider(BaseSpider):
     """Spider saving the world."""
 
     def __init__(self, world):
+        self.clear_insersion_site(world)
         super(Spider, self).__init__(world)
+
+    def clear_insersion_site(self, world):
+        """0,0 should be clear of turtles beforehand."""
+        for current_turtle in world.turtles:
+            if isinstance(current_turtle, EvilTurtle):
+                if isinstance(current_turtle, PredatorTurtle):
+                    if current_turtle.distance(0,0) < 100:
+                        current_turtle.forward(100)
+                        current_turtle.freeze()
+                else:
+                    if current_turtle.distance(0,0) < 30:
+                        current_turtle.forward(30)
 
     def setup(self):
         """Setup the turtle."""
@@ -31,6 +44,8 @@ class Spider(BaseSpider):
         self.world.screen.register_shape('spider.gif')
         self.shape('spider.gif')
         self.world.spiders.append(self)
+        if self not in self.world.turtles:
+            self.world.turtles.append(self)
 
     def forward(self, distance):
         self.penup()

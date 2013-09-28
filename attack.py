@@ -36,6 +36,7 @@ class EvilTurtleWorld(TurtleWorld):
         self.minions = 0
         self.spiders = []
         self.food_stores = 10
+        self.max_turtles = 50
 
     def tick(self):
         super(EvilTurtleWorld, self).tick()
@@ -47,6 +48,10 @@ class EvilTurtleWorld(TurtleWorld):
 
     def birth_turtle(self, turtle_class=None):
         """Put a new turtle into the game."""
+        if len(self.turtles) - len(self.spiders) > self.max_turtles:
+            # Too many turtles in the game
+            return None
+
         if not turtle_class:
             turtle_class = choice(TURTLE_TYPES)
         new_turtle = turtle_class(self)
