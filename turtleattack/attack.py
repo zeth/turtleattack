@@ -7,7 +7,7 @@ from evilworld import EvilTurtleWorld
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from spiders import Spider
 from borders import border_handler
-
+from spiderweb import Web
 
 def main():
     """Run the main game loop."""
@@ -16,6 +16,7 @@ def main():
         border_handler, "Attack of the Turtles")
     spider = Spider(world)
     world.turtles.append(spider)
+    Web(spider)
     ithread = InterpreterThread(world=world, spider=spider)
     ithread.start()
     world.run(-1)

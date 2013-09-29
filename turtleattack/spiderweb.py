@@ -47,7 +47,11 @@ class Web(object):
     def draw_circle(self, circle_def):
         """Draw a circle."""
         for point in circle_def:
+            self.spider.penup()
+            self.spider.pendown()
             self.spider.goto(point)
+        self.spider.penup()
+        self.spider.pendown()
         self.spider.goto(circle_def[0])
 
 
