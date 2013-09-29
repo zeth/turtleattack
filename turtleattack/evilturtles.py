@@ -2,8 +2,47 @@
 
 from random import random, choice
 from world import PowerTurtle, wrap, noisy, clamp
-from constants import SPEED_MODIFIER, BOID_ACCELERATION, BOID_ROTATION
+from constants import (SPEED_MODIFIER, BOID_ACCELERATION,
+                       BOID_ROTATION, FIREBALL_IMAGE_NAME)
 from borders import bounce_at_border, remove_at_border
+
+
+class Fireball(PowerTurtle):
+    """Dangerous fire made by the DragonTurtle."""
+    def __init__(self, world, position):
+        self.starting_x, self.starting_y = position
+        self.fire_count = 1
+        self.fire_tick = 1
+        super(Fireball, self).__init__(world)
+
+    def update_fire(self):
+        """Update the image."""
+        self.fire_count += 1
+        if self.fire_count == 17:
+            self.world.remove_turtle(self)
+        elif self.fire_count < 17:
+            self.shape(FIREBALL_IMAGE_NAME % self.fire_count)
+
+    def set_position(self):
+        """Put the fireball into position."""
+        self.setpos(self.starting_x, self.starting_y)
+
+    def setup(self):
+        """Setup the fireball."""
+        self.penup()
+        self.shape('images/fire/fireball-impact-1.gif')
+        self.set_position()
+        
+    def callback(self, world):
+        """Fade to nothing, and kill any passing spiders."""
+        self.fire_tick += 1
+        if self.fire_tick >= 5 / SPEED_MODIFIER:
+            self.fire_tick = 1
+            self.update_fire()
+
+    def handle_border(self, screen_width, screen_height):
+        """Fireball doesn't move."""
+        clamp(self, screen_width, screen_height)
 
 
 class Soup(PowerTurtle):
@@ -176,16 +215,18 @@ class WiddleTurtle(EvilTurtle):
         bounce_at_border(self, screen_width, screen_height)
 
 
-class DisappearingTurtle(EvilTurtle):
-    """Turtle that has enough and goes home when it hits the side."""
+class DragonTurtle(EvilTurtle):
+    """The Dragon Turtle leaves a trail of fire and is not affected by web,
+    however it cannot turn so just continues off the map into the sea."""
+
     def setup(self):
-        super(DisappearingTurtle, self).setup()
+        super(DragonTurtle, self).setup()
         self.fillcolor('red')
         self.assigned_speed = random() * 1 * SPEED_MODIFIER
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
-        super(DisappearingTurtle, self).callback(world)
+        super(DragonTurtle, self).callback(world)
         self.penup()
         self.forward(self.assigned_speed)
 
@@ -193,6 +234,10 @@ class DisappearingTurtle(EvilTurtle):
         """Ghost turtles wrap like in Pac-Man."""
         remove_at_border(self, screen_width, screen_height, self.world)
 
+    def caught(self):
+        """DragonTurtle breaks through the web with fire."""
+        fireball = Fireball(self.world, self.pos())
+        self.world.turtles.append(fireball)
 
 class BouncingTurtle(EvilTurtle):
     """Bouncing dumb turtle."""
@@ -304,5 +349,5 @@ class PredatorTurtle(EvilTurtle):
         bounce_at_border(self, screen_width, screen_height)
 
 
-TURTLE_TYPES = [DisappearingTurtle, GhostTurtle, BoidTurtle,
+TURTLE_TYPES = [DragonTurtle, GhostTurtle, BoidTurtle,
                 BouncingTurtle, WiddleTurtle, PredatorTurtle]
