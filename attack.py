@@ -8,6 +8,7 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from spiders import Spider
 from borders import border_handler
 
+
 def main():
     """Run the main game loop."""
     world = EvilTurtleWorld(

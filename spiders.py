@@ -6,31 +6,17 @@ from constants import X_OFFSET, Y_OFFSET
 from world import PowerTurtle, clamp
 from evilturtles import EvilTurtle, PredatorTurtle
 
-
-class BaseSpider(PowerTurtle):
-    """Core spider functions."""
-
-    def __init__(self, world):
-        super(BaseSpider, self).__init__(world)
-
-    def callback(self, world):
-        """Action upon tick."""
-        pass
-
-    def handle_border(self, screen_width, screen_height):
-        """Don't go outside the borders of the screen."""
-        return clamp(self, screen_width, screen_height)
-
-    def setup(self):
-        super(BaseSpider, self).setup()
+from spiderdecorators import (use_original_doc, living_required,
+                              individualise_lines)
 
 
-class Spider(BaseSpider):
+class Spider(PowerTurtle):
     """Spider saving the world."""
 
     def __init__(self, world):
         self.clear_insersion_site(world)
         super(Spider, self).__init__(world)
+        self.squished = False
 
     @staticmethod
     def clear_insersion_site(world):
@@ -54,19 +40,14 @@ class Spider(BaseSpider):
         if self not in self.world.turtles:
             self.world.turtles.append(self)
 
-    def forward(self, distance):
-        self.penup()
-        self.pendown()
-        super(Spider, self).forward(distance)
-        self.penup()
-        self.pendown()
-
     def die(self):
         """Remove the spider from the game."""
+        self.penup()
         self.write("A spider got eaten")
         self.draw_splat()
         self.world.spiders.remove(self)
         self.world.remove_turtle(self)
+        self.squished = True
 
     def draw_splat(self):
         """Remains of a spider.
@@ -80,3 +61,93 @@ class Spider(BaseSpider):
         points = [(xcoord + randrange(X_OFFSET), ycoord + randrange(Y_OFFSET))
                   for point in range(randint(10, 30))]
         canvas.create_polygon(points, fill='red', outline='black')
+
+    def callback(self, world):
+        """Action upon tick."""
+        pass
+
+    def handle_border(self, screen_width, screen_height):
+        """Don't go outside the borders of the screen."""
+        return clamp(self, screen_width, screen_height)
+
+    @use_original_doc(PowerTurtle.forward)
+    @living_required
+    @individualise_lines
+    def forward(self, distance):
+        """Make the spider go forward."""
+        super(Spider, self).forward(distance)
+
+    @use_original_doc(PowerTurtle.back)
+    @living_required
+    @individualise_lines
+    def back(self, distance):
+        super(Spider, self).backward(distance)
+
+    @use_original_doc(PowerTurtle.right)
+    @living_required
+    def right(self, angle):
+        super(Spider, self).right(angle)
+
+    @use_original_doc(PowerTurtle.left)
+    @living_required
+    def left(self, angle):
+        super(Spider, self).left(angle)
+
+    @use_original_doc(PowerTurtle.goto)
+    @living_required
+    def goto(self, x, y=None):
+        super(Spider, self).goto(x, y)
+
+    @use_original_doc(PowerTurtle.setx)
+    @living_required
+    def setx(self, x):
+        super(Spider, self).setx(x)
+
+    @use_original_doc(PowerTurtle.sety)
+    @living_required
+    def sety(self, y):
+        super(Spider, self).sety(y)
+
+    @use_original_doc(PowerTurtle.setheading)
+    @living_required
+    def setheading(self, to_angle):
+        super(Spider, self).setheading(to_angle)
+
+    @use_original_doc(PowerTurtle.home)
+    @living_required
+    def home(self):
+        super(Spider, self).home()
+
+    @use_original_doc(PowerTurtle.circle)
+    @living_required
+    def circle(self, radius, extent=None, steps=None):
+        super(Spider, self).circle(radius, extent, steps)
+
+    @use_original_doc(PowerTurtle.dot)
+    @living_required
+    def dot(self, size=None, *color):
+        super(Spider, self).dot(size, *color)
+
+    @use_original_doc(PowerTurtle.stamp)
+    @living_required
+    def stamp(self):
+        super(Spider, self).stamp()
+
+    @use_original_doc(PowerTurtle.undo)
+    @living_required
+    def undo(self):
+        super(Spider, self).undo()
+
+    @use_original_doc(PowerTurtle.speed)
+    @living_required
+    def speed(self, speed=None):
+        super(Spider, self).speed(speed)
+
+    fd = forward
+    bk = back
+    backward = back
+    rt = right
+    lt = left
+    setpos = goto
+    setposition = goto
+    seth = setheading
