@@ -51,10 +51,10 @@ class Fireball(PowerTurtle):
         cur_x, cur_y = self.pos()
         canvas = self.world.screen.cv
         nearby_things = canvas.find_overlapping(
-            cur_x - 20,
-            cur_y - 20,
-            cur_x + 20,
-            cur_y + 20)
+            cur_x - 10,
+            cur_y - 10,
+            cur_x + 10,
+            cur_y + 10)
         for thing_id in nearby_things[:]:
             if canvas.type(thing_id) == 'line':
                 # Remove that bit of web
@@ -308,17 +308,17 @@ class DragonTurtle(EvilTurtle):
 
     def turn_sometimes(self):
         """Move the turte around sometimes."""
-        roll = randint(1,30)
-        if roll == 1:
+        roll = randint(1,50)
+        if roll < 5:
             target_heading = self.heading() - random()*15
-        elif roll == 2:
+        elif roll > 45:
             target_heading = self.heading() + random()*15
-        elif roll == 3:
+        elif roll == 25:
             if self.world.spiders:
                 target_heading = self.towards(0,0)
             else:
                 return
-        elif roll == 4:
+        elif roll == 35:
             spider_distances = {
                 self.distance(spider): spider for spider in
                 self.world.spiders[:]}

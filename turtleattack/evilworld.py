@@ -20,11 +20,11 @@ class EvilTurtleWorld(TurtleWorld):
 
     def tick(self):
         super(EvilTurtleWorld, self).tick()
-        # Do whatever I want here
-        self.hatching += 1
-        if self.hatching == 100 / SPEED_MODIFIER:
-            self.hatching = 0
-            self.birth_turtle()
+        if self.spiders:  # No spawning when no player chars
+            self.hatching += 1
+            if self.hatching == 100 / SPEED_MODIFIER:
+                self.hatching = 0
+                self.birth_turtle()
 
     def birth_turtle(self, turtle_class=None):
         """Put a new turtle into the game."""
