@@ -122,9 +122,33 @@ class EvilTurtle(PowerTurtle):
         self.shape('turtle')
         self.penup()
 
-    def set_position(self):
-        """Put the turtle into position."""
-        self.world.random_position(self)
+    def get_random_pos(self):
+        """Get a random pos which is not in the home zone."""
+        pos = (randint(-self.world.half_width, self.world.half_width),
+               randint(-self.world.half_height, self.world.half_height))
+        if pos[0] < 200 and pos[0] > -200 and pos[1] < 200 and pos[1] > -200:            # We are in the home zone, roll again
+            return self.get_random_pos()
+        else:
+            return pos
+
+    def set_position(self, pos=None, angle=None):
+        # move to location
+        self.hideturtle()
+        self.penup()
+        if pos is None:
+            pos = self.get_random_pos()
+        x, y = pos
+        self.goto(x, y)
+        if angle is None:
+            angle = random() * 360
+        self.setheading(angle)
+        # ready to go
+        self.showturtle()
+        self.pendown()
+
+    #def set_position(self):
+    #    """Put the turtle into position."""
+    #    self.world.random_position(self)
 
     def caught(self):
         """Caught in the web."""
@@ -290,7 +314,10 @@ class DragonTurtle(EvilTurtle):
         elif roll == 2:
             target_heading = self.heading() + random()*15
         elif roll == 3:
-            target_heading = self.towards(0,0)
+            if self.world.spiders:
+                target_heading = self.towards(0,0)
+            else:
+                return
         elif roll == 4:
             spider_distances = {
                 self.distance(spider): spider for spider in
@@ -407,7 +434,7 @@ class PredatorTurtle(EvilTurtle):
         except ValueError:
             # I.e. no spider on screen at the moment
             # Just relax
-            pass
+            self.forward(self.assigned_speed / 2)
         else:
             self.turn_towards(self.towards(target), 360)
             self.forward(self.assigned_speed)
