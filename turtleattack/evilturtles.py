@@ -1,9 +1,10 @@
 """Evil Turtles."""
 
-from random import random, choice
+from random import random, choice, randint
 from world import PowerTurtle, wrap, noisy, clamp
 from constants import (SPEED_MODIFIER, BOID_ACCELERATION,
-                       BOID_ROTATION, FIREBALL_IMAGE_NAME)
+                       BOID_ROTATION, FIREBALL_IMAGE_NAME,
+                       SCREEN_WIDTH)
 from borders import bounce_at_border, remove_at_border
 
 
@@ -32,6 +33,7 @@ class Fireball(PowerTurtle):
         self.penup()
         self.shape('images/fire/fireball-impact-1.gif')
         self.set_position()
+        self.check_for_web()
         
     def callback(self, world):
         """Fade to nothing, and kill any passing spiders."""
@@ -43,6 +45,20 @@ class Fireball(PowerTurtle):
     def handle_border(self, screen_width, screen_height):
         """Fireball doesn't move."""
         clamp(self, screen_width, screen_height)
+
+    def check_for_web(self):
+        """Burn any nearby web."""
+        cur_x, cur_y = self.pos()
+        canvas = self.world.screen.cv
+        nearby_things = canvas.find_overlapping(
+            cur_x - 20,
+            cur_y - 20,
+            cur_x + 20,
+            cur_y + 20)
+        for thing_id in nearby_things[:]:
+            if canvas.type(thing_id) == 'line':
+                # Remove that bit of web
+                canvas.delete(thing_id)
 
 
 class Soup(PowerTurtle):
@@ -106,7 +122,6 @@ class EvilTurtle(PowerTurtle):
         self.shape('turtle')
         self.penup()
 
-
     def set_position(self):
         """Put the turtle into position."""
         self.world.random_position(self)
@@ -166,7 +181,7 @@ class EvilTurtle(PowerTurtle):
 
 
 class GhostTurtle(EvilTurtle):
-    """Basic dumb turtle."""
+    """Goes in a straight line, but can wrap like a Pac-Man ghost."""
     def setup(self):
         super(GhostTurtle, self).setup()
         self.fillcolor('cyan')
@@ -190,7 +205,7 @@ class WiddleTurtle(EvilTurtle):
 
     def setup(self):
         super(WiddleTurtle, self).setup()
-        self.fillcolor('orange')
+        self.fillcolor('pink')
         self.clockwise = choice([False, True])
         self.assigned_speed = random() * 4 * SPEED_MODIFIER
 
@@ -217,27 +232,80 @@ class WiddleTurtle(EvilTurtle):
 
 class DragonTurtle(EvilTurtle):
     """The Dragon Turtle leaves a trail of fire and is not affected by web,
-    however it cannot turn so just continues off the map into the sea."""
+    however it can get tired out and then is vulnerable."""
 
     def setup(self):
         super(DragonTurtle, self).setup()
         self.fillcolor('red')
         self.assigned_speed = random() * 1 * SPEED_MODIFIER
+        self.live_fire = True 
+        self.charge = SCREEN_WIDTH * 3
+        self.recharge = 0
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
         super(DragonTurtle, self).callback(world)
         self.penup()
-        self.forward(self.assigned_speed)
+        if self.live_fire:
+            self.turn_sometimes()
+            self.forward(self.assigned_speed)
+            self.charge -= self.assigned_speed
+            if self.charge < 0:
+                self.out_of_battery()
+        else:
+            self.forward(self.assigned_speed / 3)
+            self.recharge -= self.assigned_speed
+            if self.recharge < 0:
+                self.recharged()
+
+    def out_of_battery(self):
+        """Give the DragonTurtle a rest."""
+        self.fillcolor('orange')
+        self.live_fire = False
+        self.recharge = SCREEN_WIDTH
+
+    def recharged(self):
+        """All rested, get the fire back out."""
+        self.fillcolor('red')
+        self.live_fire = True
+        self.charge = SCREEN_WIDTH * 3
 
     def handle_border(self, screen_width, screen_height):
-        """Ghost turtles wrap like in Pac-Man."""
-        remove_at_border(self, screen_width, screen_height, self.world)
+        """Bounce at the border."""
+        bounce_at_border(self, screen_width, screen_height)
 
     def caught(self):
         """DragonTurtle breaks through the web with fire."""
-        fireball = Fireball(self.world, self.pos())
-        self.world.turtles.append(fireball)
+        if self.live_fire:
+            fireball = Fireball(self.world, self.pos())
+            self.world.turtles.append(fireball)
+        else:
+            super(DragonTurtle, self).caught()
+
+    def turn_sometimes(self):
+        """Move the turte around sometimes."""
+        roll = randint(1,30)
+        if roll == 1:
+            target_heading = self.heading() - random()*15
+        elif roll == 2:
+            target_heading = self.heading() + random()*15
+        elif roll == 3:
+            target_heading = self.towards(0,0)
+        elif roll == 4:
+            spider_distances = {
+                self.distance(spider): spider for spider in
+                self.world.spiders[:]}
+            try:
+                target = spider_distances[min(spider_distances)]
+            except ValueError:
+                # I.e. no spider on screen at the moment
+                # Just relax
+                return
+            target_heading = self.towards(target)
+        else:
+            return
+        self.turn_towards(target_heading, 360)
+
 
 class BouncingTurtle(EvilTurtle):
     """Bouncing dumb turtle."""
