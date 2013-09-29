@@ -6,7 +6,7 @@ from constants import X_OFFSET, Y_OFFSET
 from world import PowerTurtle, clamp
 from evilturtles import EvilTurtle, PredatorTurtle
 
-from spiderdecorators import (use_original_doc, living_required,
+from spiderdecorators import (reuse_doc, living_required,
                               individualise_lines)
 
 
@@ -70,75 +70,75 @@ class Spider(PowerTurtle):
         """Don't go outside the borders of the screen."""
         return clamp(self, screen_width, screen_height)
 
-    @use_original_doc(PowerTurtle.forward)
+    @reuse_doc(PowerTurtle.forward)
     @living_required
     @individualise_lines
     def forward(self, distance):
         """Make the spider go forward."""
         super(Spider, self).forward(distance)
 
-    @use_original_doc(PowerTurtle.back)
+    @reuse_doc(PowerTurtle.back)
     @living_required
     @individualise_lines
     def back(self, distance):
         super(Spider, self).backward(distance)
 
-    @use_original_doc(PowerTurtle.right)
+    @reuse_doc(PowerTurtle.right)
     @living_required
     def right(self, angle):
         super(Spider, self).right(angle)
 
-    @use_original_doc(PowerTurtle.left)
+    @reuse_doc(PowerTurtle.left)
     @living_required
     def left(self, angle):
         super(Spider, self).left(angle)
 
-    @use_original_doc(PowerTurtle.goto)
+    @reuse_doc(PowerTurtle.goto)
     @living_required
     def goto(self, x, y=None):
         super(Spider, self).goto(x, y)
 
-    @use_original_doc(PowerTurtle.setx)
+    @reuse_doc(PowerTurtle.setx)
     @living_required
     def setx(self, x):
         super(Spider, self).setx(x)
 
-    @use_original_doc(PowerTurtle.sety)
+    @reuse_doc(PowerTurtle.sety)
     @living_required
     def sety(self, y):
         super(Spider, self).sety(y)
 
-    @use_original_doc(PowerTurtle.setheading)
+    @reuse_doc(PowerTurtle.setheading)
     @living_required
     def setheading(self, to_angle):
         super(Spider, self).setheading(to_angle)
 
-    @use_original_doc(PowerTurtle.home)
+    @reuse_doc(PowerTurtle.home)
     @living_required
     def home(self):
         super(Spider, self).home()
 
-    @use_original_doc(PowerTurtle.circle)
+    @reuse_doc(PowerTurtle.circle)
     @living_required
     def circle(self, radius, extent=None, steps=None):
         super(Spider, self).circle(radius, extent, steps)
 
-    @use_original_doc(PowerTurtle.dot)
+    @reuse_doc(PowerTurtle.dot)
     @living_required
     def dot(self, size=None, *color):
         super(Spider, self).dot(size, *color)
 
-    @use_original_doc(PowerTurtle.stamp)
+    @reuse_doc(PowerTurtle.stamp)
     @living_required
     def stamp(self):
         super(Spider, self).stamp()
 
-    @use_original_doc(PowerTurtle.undo)
+    @reuse_doc(PowerTurtle.undo)
     @living_required
     def undo(self):
         super(Spider, self).undo()
 
-    @use_original_doc(PowerTurtle.speed)
+    @reuse_doc(PowerTurtle.speed)
     @living_required
     def speed(self, speed=None):
         super(Spider, self).speed(speed)

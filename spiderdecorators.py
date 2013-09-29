@@ -7,7 +7,7 @@ separated into this file.
 from functools import wraps
 
 
-def use_original_doc(original_func):
+def reuse_doc(original_func):
     """Use the original docstring from the given parent class."""
     def original_doc(func):
         @wraps(func)
