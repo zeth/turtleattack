@@ -107,20 +107,24 @@ class Soup(PowerTurtle):
 
 
 class EvilTurtle(PowerTurtle):
-    """Evil Killer Turtle."""
+    """Evil Killer Turtle.
+    This is the base EvilTurtle henchman, not very bright.
+    """
 
     def __init__(self, world):
         super(EvilTurtle, self).__init__(world)
-        self.assigned_speed = 2
         self.frozen = False
         self.freeze_count = 0
         self.truecolor = None
         self.radius = 10
+        self.clockwise = choice([False, True])
 
     def setup(self):
         """Setup the turtle."""
         self.shape('turtle')
         self.penup()
+        self.assigned_speed = random() * 4 * SPEED_MODIFIER
+        self.fillcolor('green')
 
     def get_random_pos(self):
         """Get a random pos which is not in the home zone."""
@@ -182,7 +186,7 @@ class EvilTurtle(PowerTurtle):
             if self.distance(spider) < self.radius:
                 spider.die()
 
-    def callback(self, world):
+    def pre_callback(self):
         if self.frozen:
             self.thaw()
         else:
@@ -203,39 +207,13 @@ class EvilTurtle(PowerTurtle):
             self.fillcolor(self.truecolor)
             self.frozen = False
 
-
-class GhostTurtle(EvilTurtle):
-    """Goes in a straight line, but can wrap like a Pac-Man ghost."""
-    def setup(self):
-        super(GhostTurtle, self).setup()
-        self.fillcolor('cyan')
-        self.assigned_speed = random() * 6 * SPEED_MODIFIER
-
-    def callback(self, world):
-        """Move the turtle each tick of the game loop."""
-        super(GhostTurtle, self).callback(world)
-
-        self.penup()
-        self.forward(self.assigned_speed)
-
     def handle_border(self, screen_width, screen_height):
-        """Ghost turtles wrap like in Pac-Man."""
-        wrap(self, screen_width, screen_height)
-
-
-class WiddleTurtle(EvilTurtle):
-    """Basic dumb turtle."""
-    clockwise = False
-
-    def setup(self):
-        super(WiddleTurtle, self).setup()
-        self.fillcolor('pink')
-        self.clockwise = choice([False, True])
-        self.assigned_speed = random() * 4 * SPEED_MODIFIER
+        """Just turn around at the border."""
+        bounce_at_border(self, screen_width, screen_height)
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
-        super(WiddleTurtle, self).callback(world)
+        self.pre_callback()
         self.penup()
         self.forward(self.assigned_speed)
         if self.clockwise:
@@ -249,9 +227,23 @@ class WiddleTurtle(EvilTurtle):
             else:
                 self.clockwise = True
 
+
+class GhostTurtle(EvilTurtle):
+    """Goes in a straight line, but can wrap like a Pac-Man ghost."""
+    def setup(self):
+        super(GhostTurtle, self).setup()
+        self.fillcolor('cyan')
+        self.assigned_speed = random() * 6 * SPEED_MODIFIER
+
+    def callback(self, world):
+        """Move the turtle each tick of the game loop."""
+        super(GhostTurtle, self).pre_callback()
+        self.penup()
+        self.forward(self.assigned_speed)
+
     def handle_border(self, screen_width, screen_height):
         """Ghost turtles wrap like in Pac-Man."""
-        bounce_at_border(self, screen_width, screen_height)
+        wrap(self, screen_width, screen_height)
 
 
 class DragonTurtle(EvilTurtle):
@@ -268,7 +260,7 @@ class DragonTurtle(EvilTurtle):
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
-        super(DragonTurtle, self).callback(world)
+        super(DragonTurtle, self).pre_callback()
         self.penup()
         if self.live_fire:
             self.turn_sometimes()
@@ -334,24 +326,6 @@ class DragonTurtle(EvilTurtle):
         self.turn_towards(target_heading, 360)
 
 
-class BouncingTurtle(EvilTurtle):
-    """Bouncing dumb turtle."""
-    def setup(self):
-        super(BouncingTurtle, self).setup()
-        self.fillcolor('purple')
-        self.assigned_speed = random() * 3 * SPEED_MODIFIER
-
-    def callback(self, world):
-        """Move the turtle each tick of the game loop."""
-        super(BouncingTurtle, self).callback(world)
-        self.penup()
-        self.forward(self.assigned_speed)
-
-    def handle_border(self, screen_width, screen_height):
-        """Ghost turtles wrap like in Pac-Man."""
-        bounce_at_border(self, screen_width, screen_height)
-
-
 class BoidTurtle(EvilTurtle):
     """Turtles that form groups."""
     def setup(self):
@@ -365,7 +339,7 @@ class BoidTurtle(EvilTurtle):
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
-        super(BoidTurtle, self).callback(world)
+        super(BoidTurtle, self).pre_callback()
         self.penup()
         neighbours = self.get_neighbours(60, 120)
         if not neighbours:
@@ -414,12 +388,12 @@ class PredatorTurtle(EvilTurtle):
 
     def setup(self):
         super(PredatorTurtle, self).setup()
-        self.fillcolor('green')
+        self.fillcolor('purple')
         self.assigned_speed = random() * 7 * SPEED_MODIFIER
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
-        super(PredatorTurtle, self).callback(world)
+        super(PredatorTurtle, self).pre_callback()
         self.penup()
         if not self.frozen:
             self.hunt()
@@ -444,5 +418,5 @@ class PredatorTurtle(EvilTurtle):
         bounce_at_border(self, screen_width, screen_height)
 
 
-TURTLE_TYPES = [DragonTurtle, GhostTurtle, BoidTurtle,
-                BouncingTurtle, WiddleTurtle, PredatorTurtle]
+SPECIAL_TURTLE_TYPES = [DragonTurtle, GhostTurtle, BoidTurtle,
+                        PredatorTurtle]
