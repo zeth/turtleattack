@@ -14,7 +14,7 @@ Base Turtle - This is the basic Evil Turtle henchman, he is **green** and not ve
 
 Friendly Turtle - This yellow turtle likes to seek out other **yellow** turtles and form a group.
 
-Ghost Turtle - This **cyan** coloured turtle moves in a straight line but can wraparound the edge of the screen.
+Ghost Turtle - This **cyan** coloured turtle moves in a straight line but can wraparound the edge of the screen to attack from the other side.
 
 Predator Turtle - This **purple** turtle is a fearless hunter and heads straight for the spider.
 
