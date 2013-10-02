@@ -10,7 +10,15 @@ The last hope for the world is a friendly spider - help her to catch the evil tu
 How to run the game
 ===================
 
-Installing using the setup.py file is not required, if you want you can just start the game by typing ./turtleattack in the game directory.
+To install the game, use::
+
+    python setup.py install
+
+Then to start the game, use::
+
+    tattack
+
+However, installing using the setup.py file is not required, if you want you can just start the game by typing ./tattack in the source directory.
 
 Gameplay involves using two windows. The game window and the interpreter within your computer's terminal application.
 
