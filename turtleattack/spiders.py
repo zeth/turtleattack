@@ -2,7 +2,8 @@
 
 from random import randrange, randint
 
-from turtleattack.constants import X_OFFSET, Y_OFFSET
+from turtleattack.constants import X_OFFSET, Y_OFFSET, SPIDER_IMAGE_NAME
+
 from turtleattack.world import PowerTurtle, clamp
 from turtleattack.evilturtles import BaseTurtle, PredatorTurtle
 
@@ -34,8 +35,7 @@ class Spider(PowerTurtle):
     def setup(self):
         """Setup the turtle."""
         super(Spider, self).setup()
-        self.world.screen.register_shape('spider.gif')
-        self.shape('spider.gif')
+        self.shape(SPIDER_IMAGE_NAME)
         self.world.spiders.append(self)
         if self not in self.world.turtles:
             self.world.turtles.append(self)

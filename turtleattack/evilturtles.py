@@ -4,7 +4,7 @@ from random import random, choice, randint
 from turtleattack.world import PowerTurtle, wrap, noisy, clamp
 from turtleattack.constants import (SPEED_MODIFIER, BOID_ACCELERATION,
                        BOID_ROTATION, FIREBALL_IMAGE_NAME,
-                       SCREEN_WIDTH)
+                       SCREEN_WIDTH, SOUP_IMAGE_NAME)
 from turtleattack.borders import bounce_at_border, remove_at_border
 
 
@@ -72,8 +72,7 @@ class Soup(PowerTurtle):
     def setup(self):
         """Setup the turtle."""
         self.penup()
-        self.world.screen.register_shape('soup.gif')
-        self.shape('soup.gif')
+        self.shape(SOUP_IMAGE_NAME)
         self.set_position()
 
     def set_position(self):

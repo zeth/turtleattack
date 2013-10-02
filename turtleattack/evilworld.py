@@ -3,9 +3,10 @@
 from random import choice, getrandbits
 
 from turtleattack.evilturtles import BaseTurtle, SPECIAL_TURTLE_TYPES
-from turtleattack.constants import SPEED_MODIFIER, FIREBALL_IMAGE_NAME
+from turtleattack.constants import (SPEED_MODIFIER, FIREBALL_IMAGE_NAME,
+                                    SPIDER_IMAGE_NAME, SOUP_IMAGE_NAME)
 from turtleattack.world import TurtleWorld, wrap
-
+import os
 
 class EvilTurtleWorld(TurtleWorld):
     """The world window, infected by evil turtles."""
@@ -47,8 +48,8 @@ class EvilTurtleWorld(TurtleWorld):
 
     def setup_shapes(self):
         """Load the shapes."""
-        self.screen.register_shape('spider.gif')
-        self.screen.register_shape('soup.gif')
+        self.screen.register_shape(SPIDER_IMAGE_NAME)
+        self.screen.register_shape(SOUP_IMAGE_NAME)
         for num in range(1,17):
             self.screen.register_shape(FIREBALL_IMAGE_NAME % num)
 
