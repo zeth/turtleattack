@@ -14,12 +14,12 @@ Start the game by typing ./turtleattack in the game directory.
 
 Gameplay involves using two windows. The game window and the interpreter within your computer's terminal application.
 
-If the game does not exit cleanly and it leaves the terminal in an abnormal state (e.g. in the process of customising the game you make TK crash), then use the *reset* command to restore your terminal to its initial state.
-
 How to end the game
 ===================
 
 To end the game, close the game window using the close icon (the X in the corner of the window); then leave the interpreter by pressing Ctrl+D (the Control key and the D key at the same time).
+
+If the game does not exit cleanly and it leaves the terminal in an abnormal state (e.g. in the process of customising the game you make TK crash), then use the *reset* command to restore your terminal to its initial state.
 
 The Evil Turtles
 ----------------
