@@ -55,7 +55,7 @@ To make the spider go back to the centre of the screen use::
 
     spider.home()
 
-To make the spider go directly to a certain point, use goto, for example, if we want to send the spider to 200 pixels above and 200 pixels right of the starting point, we can use:
+To make the spider go directly to a certain point, use goto, for example, if we want to send the spider to 200 pixels above and 200 pixels right of the starting point, we can use::
 
     spider.goto(200,200)
 
@@ -68,11 +68,11 @@ Making a new spider
  
 If your spider is squished, you will want to make a new one. Also, once you get very good at controlling one spider, you might want to control several.
 
-To have the ability to make new spiders, you have to type this magic spell:
+To have the ability to make new spiders, you have to type this magic spell::
 
-from spiders import Spider
+    from spiders import Spider
 
-Now you have the ability to make new spiders in the following way. Firstly,  you need to give a spider a name, then you need to put the spider into the game world. For example, if you wanted to call my spider Sally::
+Now you have the ability to make new spiders in the following way. Firstly,  you need to give a spider a name, then you need to put the spider into the game world. For example, if you wanted to call your spider Sally::
 
     sally = Spider(world)
 
@@ -80,11 +80,11 @@ Now you can control Sally::
 
     sally.forwards(100)
 
-Lets make another spider called George:
+Lets make another spider called George::
 
     george = Spider(world)
 
-Now you can contol George:
+Now you can control George::
 
     george.back(100)
 
@@ -106,7 +106,7 @@ Or if your spider is now called Sally::
 Advanced Spider control
 -----------------------
 
-The spider and the evil turtles are in fact both types of (*subclasses of*) Python turtles, `this page`_ lists the available commands (called *methods*).
+The spider and the evil turtles are in fact both types of (*subclasses of*) the Python turtle, `this page`_ lists all the available commands (called *methods*) that Python turtles have.
 
 Creating new types of turtles and spiders
 -----------------------------------------
@@ -114,6 +114,3 @@ Creating new types of turtles and spiders
 To be written.
 
 .. _`this page`: http://docs.python.org/3.3/library/turtle.html#turtle-methods
-
-
-
