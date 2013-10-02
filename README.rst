@@ -1,5 +1,5 @@
-Turtle Attack - putting the violence into Turtle graphics
-=========================================================
+Turtle Attack - save the world from evil turtles
+================================================
 
 *Turtle attack is a simple computer game that aims to introduce basic programming concepts (via the Python language) without being boring.*
 
