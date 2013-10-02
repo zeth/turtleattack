@@ -155,3 +155,25 @@ Creating new types of turtles and spiders
 To be written.
 
 .. _`this page`: http://docs.python.org/3.3/library/turtle.html#turtle-methods
+
+Tips
+----
+
+* Using the up cursor key allows you to access and reuse your command history.
+
+* Try to keep the central home area free of evil turtles so you can create new spiders easily.
+
+* You can chain commands together using semi-colons. For example, you can make the spider leave her safer central zone, lay a square of web and then come back to home, all chained together in one line.
+
+* At the moment there is little balancing for screen size, meaning that a large screen resolution will make it easy on the spider, a small resolution makes it easier for the evil turtles.
+
+* If the game window throws a Python error and freezes, resume it with::
+
+    world.run(-1)
+
+* Learning more Python syntax allows you to automate your spiders in interesting ways. For example, the *for* statement can be a really powerful tool::
+
+    from random import randint
+    for i in range(100):
+        spider.right(randint(1,360))
+        spider.forward(randint(20,300))
