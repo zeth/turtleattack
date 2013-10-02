@@ -27,11 +27,17 @@ Game options
 
 When you run the tattack command, you can also provide any (or none) of the following options:
 
--x Width of the game screen in pixels
--y Height of the game screen in pixels
--f Fullscreen game window (only useful in multi-monitor setups)
--t Training mode (no enemy turtles)
--m Maximum number of enemy turtles
++----+--------------------------------------------------------------+
+| -x | Width of the game screen in pixels                           |
++----+--------------------------------------------------------------+
+| -y | Height of the game screen in pixels                          |
++----+--------------------------------------------------------------+
+| -f | Fullscreen game window (only useful in multi-monitor setups) |
++----+--------------------------------------------------------------+
+| -t | Training mode (no enemy turtles)                             |
++----+--------------------------------------------------------------+
+| -m | Maximum number of enemy turtles                              |
++----+--------------------------------------------------------------+
 
 Also using -h will show these options, so you do not have to remember them now. So for example, if you want the game screen to be 800 by 800 pixels, and you want to be in training mode, then you need to type::
 
