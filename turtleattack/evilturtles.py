@@ -106,13 +106,13 @@ class Soup(PowerTurtle):
         self.world.food_stores += 1
 
 
-class EvilTurtle(PowerTurtle):
+class BaseTurtle(PowerTurtle):
     """Evil Killer Turtle.
     This is the base EvilTurtle henchman, not very bright.
     """
 
     def __init__(self, world):
-        super(EvilTurtle, self).__init__(world)
+        super(BaseTurtle, self).__init__(world)
         self.frozen = False
         self.freeze_count = 0
         self.truecolor = None
@@ -228,7 +228,7 @@ class EvilTurtle(PowerTurtle):
                 self.clockwise = True
 
 
-class GhostTurtle(EvilTurtle):
+class GhostTurtle(BaseTurtle):
     """Goes in a straight line, but can wrap like a Pac-Man ghost."""
     def setup(self):
         super(GhostTurtle, self).setup()
@@ -246,7 +246,7 @@ class GhostTurtle(EvilTurtle):
         wrap(self, screen_width, screen_height)
 
 
-class DragonTurtle(EvilTurtle):
+class DragonTurtle(BaseTurtle):
     """The Dragon Turtle leaves a trail of fire and is not affected by web,
     however it can get tired out and then is vulnerable."""
 
@@ -326,10 +326,10 @@ class DragonTurtle(EvilTurtle):
         self.turn_towards(target_heading, 360)
 
 
-class BoidTurtle(EvilTurtle):
+class FriendlyTurtle(BaseTurtle):
     """Turtles that form groups."""
     def setup(self):
-        super(BoidTurtle, self).setup()
+        super(FriendlyTurtle, self).setup()
         self._move = random() * 4
         self.fillcolor('yellow')
 
@@ -339,7 +339,7 @@ class BoidTurtle(EvilTurtle):
 
     def callback(self, world):
         """Move the turtle each tick of the game loop."""
-        super(BoidTurtle, self).pre_callback()
+        super(FriendlyTurtle, self).pre_callback()
         self.penup()
         neighbours = self.get_neighbours(60, 120)
         if not neighbours:
@@ -355,7 +355,7 @@ class BoidTurtle(EvilTurtle):
             speeds = []
             # separation
             for turt in neighbours:
-                if type(turt) == BoidTurtle:
+                if type(turt) == FriendlyTurtle:
                     old_x, old_y = turt.position()
                     speeds.append(turt._move)
                     headings.append(turt.heading)
@@ -383,7 +383,7 @@ class BoidTurtle(EvilTurtle):
         self.forward(self._move)
 
 
-class PredatorTurtle(EvilTurtle):
+class PredatorTurtle(BaseTurtle):
     """Turtle that hunts spiders."""
 
     def setup(self):
@@ -418,5 +418,5 @@ class PredatorTurtle(EvilTurtle):
         bounce_at_border(self, screen_width, screen_height)
 
 
-SPECIAL_TURTLE_TYPES = [DragonTurtle, GhostTurtle, BoidTurtle,
+SPECIAL_TURTLE_TYPES = [DragonTurtle, GhostTurtle, FriendlyTurtle,
                         PredatorTurtle]

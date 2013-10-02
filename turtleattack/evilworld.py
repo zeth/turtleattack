@@ -2,7 +2,7 @@
 
 from random import choice, getrandbits
 
-from evilturtles import EvilTurtle, SPECIAL_TURTLE_TYPES
+from evilturtles import BaseTurtle, SPECIAL_TURTLE_TYPES
 from constants import SPEED_MODIFIER, FIREBALL_IMAGE_NAME
 from world import TurtleWorld, wrap
 
@@ -36,7 +36,7 @@ class EvilTurtleWorld(TurtleWorld):
             if getrandbits(1):
                 turtle_class = choice(SPECIAL_TURTLE_TYPES)
             else:
-                turtle_class = EvilTurtle
+                turtle_class = BaseTurtle
 
         new_turtle = turtle_class(self)
         self.add_turtle(new_turtle)

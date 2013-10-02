@@ -4,7 +4,7 @@ from random import randrange, randint
 
 from constants import X_OFFSET, Y_OFFSET
 from world import PowerTurtle, clamp
-from evilturtles import EvilTurtle, PredatorTurtle
+from evilturtles import BaseTurtle, PredatorTurtle
 
 from spiderdecorators import (reuse_doc, living_required,
                               individualise_lines)
@@ -22,7 +22,7 @@ class Spider(PowerTurtle):
     def clear_insersion_site(world):
         """0,0 should be clear of turtles beforehand."""
         for current_turtle in world.turtles:
-            if isinstance(current_turtle, EvilTurtle):
+            if isinstance(current_turtle, BaseTurtle):
                 if isinstance(current_turtle, PredatorTurtle):
                     if current_turtle.distance(0, 0) < 100:
                         current_turtle.forward(100)
