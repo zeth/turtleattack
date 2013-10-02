@@ -20,7 +20,22 @@ Then to start the game, use::
 
 However, installing using the setup.py file is not required, if you want you can just start the game by typing ./tattack in the source directory.
 
-Gameplay involves using two windows. The game window and the interpreter within your computer's terminal application.
+Gameplay involves using two windows. The game window and the interpreter within your computer's terminal application. You need to size both so they fit comfortably on screen together at once.
+
+Game options
+============
+
+When you run the tattack command, you can also provide any (or none) of the following options:
+
+-x Width of the game screen in pixels
+-y Height of the game screen in pixels
+-f Fullscreen game window (only useful in multi-monitor setups)
+-t Training mode (no enemy turtles)
+-m Maximum number of enemy turtles
+
+Also using -h will show these options, so you do not have to remember them now. So for example, if you want the game screen to be 800 by 800 pixels, and you want to be in training mode, then you need to type::
+
+    tattack -x 800 -y 800 -t
 
 How to end the game
 ===================
