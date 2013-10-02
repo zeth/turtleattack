@@ -1,11 +1,11 @@
 """Evil Turtles."""
 
 from random import random, choice, randint
-from world import PowerTurtle, wrap, noisy, clamp
-from constants import (SPEED_MODIFIER, BOID_ACCELERATION,
+from turtleattack.world import PowerTurtle, wrap, noisy, clamp
+from turtleattack.constants import (SPEED_MODIFIER, BOID_ACCELERATION,
                        BOID_ROTATION, FIREBALL_IMAGE_NAME,
                        SCREEN_WIDTH)
-from borders import bounce_at_border, remove_at_border
+from turtleattack.borders import bounce_at_border, remove_at_border
 
 
 class Fireball(PowerTurtle):

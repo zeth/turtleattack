@@ -2,9 +2,9 @@
 
 from random import choice, getrandbits
 
-from evilturtles import BaseTurtle, SPECIAL_TURTLE_TYPES
-from constants import SPEED_MODIFIER, FIREBALL_IMAGE_NAME
-from world import TurtleWorld, wrap
+from turtleattack.evilturtles import BaseTurtle, SPECIAL_TURTLE_TYPES
+from turtleattack.constants import SPEED_MODIFIER, FIREBALL_IMAGE_NAME
+from turtleattack.world import TurtleWorld, wrap
 
 
 class EvilTurtleWorld(TurtleWorld):

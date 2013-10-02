@@ -2,11 +2,11 @@
 
 from random import randrange, randint
 
-from constants import X_OFFSET, Y_OFFSET
-from world import PowerTurtle, clamp
-from evilturtles import BaseTurtle, PredatorTurtle
+from turtleattack.constants import X_OFFSET, Y_OFFSET
+from turtleattack.world import PowerTurtle, clamp
+from turtleattack.evilturtles import BaseTurtle, PredatorTurtle
 
-from spiderdecorators import (reuse_doc, living_required,
+from turtleattack.spiderdecorators import (reuse_doc, living_required,
                               individualise_lines)
 
 

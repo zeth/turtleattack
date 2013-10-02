@@ -2,12 +2,12 @@
 
 from __future__ import division, print_function, absolute_import
 
-from shell import InterpreterThread
-from evilworld import EvilTurtleWorld
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
-from spiders import Spider
-from borders import border_handler
-from spiderweb import Web
+from turtleattack.shell import InterpreterThread
+from turtleattack.evilworld import EvilTurtleWorld
+from turtleattack.constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from turtleattack.spiders import Spider
+from turtleattack.borders import border_handler
+from turtleattack.spiderweb import Web
 
 def main():
     """Run the main game loop."""

@@ -7,6 +7,20 @@ One night after school, we saw strange arrow shapes in the sky. The next morning
 
 The last hope for the world is a friendly spider - help her to catch the evil turtles in her web.
 
+How to run the game
+===================
+
+Start the game by typing ./turtleattack in the game directory.
+
+Gameplay involves using two windows. The game window and the interpreter within your computer's terminal application.
+
+If the game does not exit cleanly and it leaves the terminal in an abnormal state (e.g. in the process of customising the game you make TK crash), then use the *reset* command to restore your terminal to its initial state.
+
+How to end the game
+===================
+
+To end the game, close the game window using the close icon (the X in the corner of the window); then leave the interpreter by pressing Ctrl+D (the Control key and the D key at the same time).
+
 The Evil Turtles
 ----------------
 
@@ -23,13 +37,11 @@ Dragon Turtle - When coloured **red**, he breathes fire and burns his way throug
 The Spider
 ----------
 
-Gameplay involves using two windows. The game window and the interpreter window. The evil turtles move themselves.
-
-You control the spider by typing commands into the interpreter window, the spider responds in the game window.
+The evil turtles move themselves. You control the spider by typing commands into the interpreter window, the spider responds in the game window.
 
 At the start of the game, there is a starting spider, called somewhat unimaginatively, *spider*. To make the spider move forward 100 pixels, type::
 
-    spider.forwards(100)
+    spider.forward(100)
 
 The spider then moves 100 pixels forward, leaving web as it moves.
 
@@ -39,7 +51,7 @@ To make the spider turn right, type::
 
 Now type again::
 
-    spider.forwards(100)
+    spider.forward(100)
 
 Now the spider has moved again, this time in the new direction.
 
@@ -70,7 +82,7 @@ If your spider is squished, you will want to make a new one. Also, once you get 
 
 To have the ability to make new spiders, you have to type this magic spell::
 
-    from spiders import Spider
+    from turtleattack.spiders import Spider
 
 Now you have the ability to make new spiders in the following way. Firstly,  you need to give a spider a name, then you need to put the spider into the game world. For example, if you wanted to call your spider Sally::
 
@@ -78,7 +90,7 @@ Now you have the ability to make new spiders in the following way. Firstly,  you
 
 Now you can control Sally::
 
-    sally.forwards(100)
+    sally.forward(100)
 
 Lets make another spider called George::
 
@@ -93,7 +105,7 @@ Rebuild the home web
 
 If you want the ability to automatically rebuild the web at the starting point, you can use the following magic spell:
 
-from spiderweb import Web
+from turtleattack.spiderweb import Web
 
 Then you need to use the name of a spider and the word Web, so for example, if the starting spider is still alive, you can use::
 
