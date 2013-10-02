@@ -3,8 +3,7 @@
 from random import random, choice, randint
 from turtleattack.world import PowerTurtle, wrap, noisy, clamp
 from turtleattack.constants import (SPEED_MODIFIER, BOID_ACCELERATION,
-                       BOID_ROTATION, FIREBALL_IMAGE_NAME,
-                       SCREEN_WIDTH, SOUP_IMAGE_NAME)
+                       BOID_ROTATION, SCREEN_WIDTH)
 from turtleattack.borders import bounce_at_border, remove_at_border
 
 
@@ -22,7 +21,7 @@ class Fireball(PowerTurtle):
         if self.fire_count == 17:
             self.world.remove_turtle(self)
         elif self.fire_count < 17:
-            self.shape(FIREBALL_IMAGE_NAME % self.fire_count)
+            self.shape(self.world.image_location['fireball-impact-%s' % self.fire_count])
 
     def set_position(self):
         """Put the fireball into position."""
@@ -31,7 +30,7 @@ class Fireball(PowerTurtle):
     def setup(self):
         """Setup the fireball."""
         self.penup()
-        self.shape('images/fire/fireball-impact-1.gif')
+        self.shape(self.world.image_location['fireball-impact-1'])
         self.set_position()
         self.check_for_web()
         
@@ -72,7 +71,7 @@ class Soup(PowerTurtle):
     def setup(self):
         """Setup the turtle."""
         self.penup()
-        self.shape(SOUP_IMAGE_NAME)
+        self.shape(self.world.image_location['soup'])
         self.set_position()
 
     def set_position(self):

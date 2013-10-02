@@ -2,11 +2,14 @@
 
 from random import choice, getrandbits
 
+import turtleattack
 from turtleattack.evilturtles import BaseTurtle, SPECIAL_TURTLE_TYPES
-from turtleattack.constants import (SPEED_MODIFIER, FIREBALL_IMAGE_NAME,
-                                    SPIDER_IMAGE_NAME, SOUP_IMAGE_NAME)
+from turtleattack.constants import SPEED_MODIFIER
 from turtleattack.world import TurtleWorld, wrap
 import os
+from pkgutil import get_loader
+import turtleattack
+
 
 class EvilTurtleWorld(TurtleWorld):
     """The world window, infected by evil turtles."""
@@ -17,7 +20,9 @@ class EvilTurtleWorld(TurtleWorld):
         self.spiders = []
         self.food_stores = 10
         self.max_turtles = 50
+        self.image_location = {}
         self.setup_shapes()
+
 
     def tick(self):
         super(EvilTurtleWorld, self).tick()
@@ -43,13 +48,34 @@ class EvilTurtleWorld(TurtleWorld):
         self.add_turtle(new_turtle)
         new_turtle.set_position()
         self.minions += 1
-        #print("%s evil turtles" % self.minions)
         return new_turtle
 
     def setup_shapes(self):
         """Load the shapes."""
-        self.screen.register_shape(SPIDER_IMAGE_NAME)
-        self.screen.register_shape(SOUP_IMAGE_NAME)
+        self.load_shape('spider')
+        self.load_shape('soup')
         for num in range(1,17):
-            self.screen.register_shape(FIREBALL_IMAGE_NAME % num)
+            self.load_shape('fireball-impact-%s' % num)
 
+    def load_shape(self, shape_name):
+        """Find shape location and register it."""
+        # Work out the path
+        long_path = self.get_resource_location('images/%s.gif' % shape_name)
+        # Register the path
+        self.screen.register_shape(long_path)
+        # Store the path for further use
+        self.image_location[shape_name] = long_path
+
+    def get_resource_location(self, resource):
+        """Get location of the resource."""
+        loader = get_loader(turtleattack)
+        parts = resource.split('/')
+        parts.insert(0, os.path.dirname(loader.get_filename()))
+        resource_name = os.path.join(*parts)
+        if os.path.exists(resource_name):
+            return resource_name
+        # Try to find the image otherwise
+        if os.path.exists(resource):
+            return resource
+        else:
+            raise RuntimeError("Cannot find image location.")

@@ -13,6 +13,7 @@ setup(name='turtleattack',
       keywords = "turtle education kids",
       scripts=['tattack'],
       packages=['turtleattack'],
+      package_data={'turtleattack': ['images/*.gif', 'images/fire/*.gif']},
       classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "License :: OSI Approved :: MIT License",
