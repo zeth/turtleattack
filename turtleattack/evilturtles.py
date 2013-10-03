@@ -159,7 +159,8 @@ class BaseTurtle(PowerTurtle):
         try:
             self.world.remove_turtle(self)
         except ValueError:
-            print("ValueError:", self)
+            # Already gone, not sure why?
+            pass
 
     def check_for_web(self):
         """Check we are not hitting a web."""
