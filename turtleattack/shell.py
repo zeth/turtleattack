@@ -3,6 +3,7 @@
 import threading
 import code
 
+
 class InterpreterThread(threading.Thread):
     """The thread containing the user's interpreter."""
     def __init__(self, world, spider):

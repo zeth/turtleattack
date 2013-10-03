@@ -8,12 +8,11 @@ from turtleattack.constants import SPEED_MODIFIER
 from turtleattack.world import TurtleWorld, wrap
 import os
 from pkgutil import get_loader
-import turtleattack
 from turtleattack.borders import border_handler
 from turtle import TurtleScreen, TK
 from tkinter import Tk
 
-    
+
 class EvilTurtleWorld(TurtleWorld):
     """The world window, infected by evil turtles."""
     def __init__(self):
@@ -35,7 +34,6 @@ class EvilTurtleWorld(TurtleWorld):
         self.done = True
         self.turtles = []
 
-        #super(EvilTurtleWorld, self).__init__(self.width, self.height, border_handler, "Turtle Attack")
         self.hatching = 0
         self.minions = 0
         self.spiders = []
@@ -45,7 +43,8 @@ class EvilTurtleWorld(TurtleWorld):
         #print ("Max Width", self.screen.cv.winfo_screenwidth())
         #print ("Max Height", self.screen.cv.winfo_screenheight())
 
-    def parse_args(self):
+    @staticmethod
+    def parse_args():
         """Parse any command line arguments."""
         try:
             from argparse import ArgumentParser
@@ -57,12 +56,19 @@ class EvilTurtleWorld(TurtleWorld):
             argparse_available = True
 
         parser = ArgumentParser()
-        parser.add_argument("-x", "--width", type=int, help="Screen width in pixels")
-        parser.add_argument("-y", "--height", type=int, help="Screen height in pixels")
-        parser.add_argument("-f", "--fullscreen", default=False, action='store_true',
-                            help="Make game window fullscreen, only useful in multi-monitor setups")
-        parser.add_argument("-t", "--training", default=False, action='store_true', help="Training mode (no enemy turtles)")
-        parser.add_argument("-m", "--max", type=int, default=50, help="Maximum number of enemy turtles (default 50)")
+        parser.add_argument(
+            "-x", "--width", type=int, help="Screen width in pixels")
+        parser.add_argument(
+            "-y", "--height", type=int, help="Screen height in pixels")
+        parser.add_argument(
+            "-f", "--fullscreen", default=False, action='store_true',
+            help="Fullscreen game window, useful in multi-monitor setups")
+        parser.add_argument(
+            "-t", "--training", default=False, action='store_true',
+            help="Training mode (no enemy turtles)")
+        parser.add_argument(
+            "-m", "--max", type=int, default=50,
+            help="Maximum number of enemy turtles (default 50)")
         args = parser.parse_args()
         if not argparse_available:
             args = args[0]
@@ -76,7 +82,8 @@ class EvilTurtleWorld(TurtleWorld):
             self.width = root.winfo_screenwidth()
             self.height = root.winfo_screenheight()
         elif not self.width and not self.height:
-            self.width = self.height = min(root.winfo_screenwidth(), root.winfo_screenheight())
+            self.width = self.height = min(
+                root.winfo_screenwidth(), root.winfo_screenheight())
         elif not self.width:
             self.width = root.winfo_screenwidth() // 2
         elif not self.height:
@@ -120,7 +127,7 @@ class EvilTurtleWorld(TurtleWorld):
         """Load the shapes."""
         self.load_shape('spider')
         self.load_shape('soup')
-        for num in range(1,17):
+        for num in range(1, 17):
             self.load_shape('fireball-impact-%s' % num)
 
     def load_shape(self, shape_name):

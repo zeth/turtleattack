@@ -3,8 +3,8 @@
 from random import random, choice, randint
 from turtleattack.world import PowerTurtle, wrap, noisy, clamp
 from turtleattack.constants import (SPEED_MODIFIER, BOID_ACCELERATION,
-                       BOID_ROTATION, SCREEN_WIDTH)
-from turtleattack.borders import bounce_at_border, remove_at_border
+                                    BOID_ROTATION, SCREEN_WIDTH)
+from turtleattack.borders import bounce_at_border
 
 
 class Fireball(PowerTurtle):
@@ -21,7 +21,9 @@ class Fireball(PowerTurtle):
         if self.fire_count == 17:
             self.world.remove_turtle(self)
         elif self.fire_count < 17:
-            self.shape(self.world.image_location['fireball-impact-%s' % self.fire_count])
+            self.shape(
+                self.world.image_location[
+                    'fireball-impact-%s' % self.fire_count])
 
     def set_position(self):
         """Put the fireball into position."""
@@ -33,7 +35,7 @@ class Fireball(PowerTurtle):
         self.shape(self.world.image_location['fireball-impact-1'])
         self.set_position()
         self.check_for_web()
-        
+
     def callback(self, world):
         """Fade to nothing, and kill any passing spiders."""
         self.fire_tick += 1
@@ -128,29 +130,27 @@ class BaseTurtle(PowerTurtle):
         """Get a random pos which is not in the home zone."""
         pos = (randint(-self.world.half_width, self.world.half_width),
                randint(-self.world.half_height, self.world.half_height))
-        if pos[0] < 200 and pos[0] > -200 and pos[1] < 200 and pos[1] > -200:            # We are in the home zone, roll again
+        if pos[0] < 200 and pos[0] > -200 and pos[1] < 200 and pos[1] > -200:
+            # We are in the home zone, roll again
             return self.get_random_pos()
         else:
             return pos
 
     def set_position(self, pos=None, angle=None):
+        """Set a position to spawn the new turtle."""
         # move to location
         self.hideturtle()
         self.penup()
         if pos is None:
             pos = self.get_random_pos()
-        x, y = pos
-        self.goto(x, y)
+        x_unit, y_unit = pos
+        self.goto(x_unit, y_unit)
         if angle is None:
             angle = random() * 360
         self.setheading(angle)
         # ready to go
         self.showturtle()
         self.pendown()
-
-    #def set_position(self):
-    #    """Put the turtle into position."""
-    #    self.world.random_position(self)
 
     def caught(self):
         """Caught in the web."""
@@ -186,6 +186,7 @@ class BaseTurtle(PowerTurtle):
                 spider.die()
 
     def pre_callback(self):
+        """Check for spider and web, as long as the turtle is not frozen."""
         if self.frozen:
             self.thaw()
         else:
@@ -253,7 +254,7 @@ class DragonTurtle(BaseTurtle):
         super(DragonTurtle, self).setup()
         self.fillcolor('red')
         self.assigned_speed = random() * 1 * SPEED_MODIFIER
-        self.live_fire = True 
+        self.live_fire = True
         self.charge = SCREEN_WIDTH * 3
         self.recharge = 0
 
@@ -298,15 +299,15 @@ class DragonTurtle(BaseTurtle):
             super(DragonTurtle, self).caught()
 
     def turn_sometimes(self):
-        """Move the turte around sometimes."""
-        roll = randint(1,50)
+        """Turn the turtle around sometimes."""
+        roll = randint(1, 50)
         if roll < 5:
             target_heading = self.heading() - random()*15
         elif roll > 45:
             target_heading = self.heading() + random()*15
         elif roll == 25:
             if self.world.spiders:
-                target_heading = self.towards(0,0)
+                target_heading = self.towards(0, 0)
             else:
                 return
         elif roll == 35:
