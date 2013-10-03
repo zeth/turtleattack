@@ -3,7 +3,7 @@
 from random import random, choice, randint
 from turtleattack.world import PowerTurtle, wrap, noisy, clamp
 from turtleattack.constants import (SPEED_MODIFIER, BOID_ACCELERATION,
-                                    BOID_ROTATION, SCREEN_WIDTH)
+                                    BOID_ROTATION)
 from turtleattack.borders import bounce_at_border
 
 
@@ -255,7 +255,7 @@ class DragonTurtle(BaseTurtle):
         self.fillcolor('red')
         self.assigned_speed = random() * 1 * SPEED_MODIFIER
         self.live_fire = True
-        self.charge = SCREEN_WIDTH * 3
+        self.charge = self.world.width * 3
         self.recharge = 0
 
     def callback(self, world):
@@ -278,13 +278,13 @@ class DragonTurtle(BaseTurtle):
         """Give the DragonTurtle a rest."""
         self.fillcolor('orange')
         self.live_fire = False
-        self.recharge = SCREEN_WIDTH
+        self.recharge = self.world.width
 
     def recharged(self):
         """All rested, get the fire back out."""
         self.fillcolor('red')
         self.live_fire = True
-        self.charge = SCREEN_WIDTH * 3
+        self.charge = self.world.width * 3
 
     def handle_border(self, screen_width, screen_height):
         """Bounce at the border."""
