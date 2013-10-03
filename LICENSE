@@ -1,0 +1,12 @@
+world.py is taken from TurtlePower which is licenced under the MIT licence. The eventual intention is to licence Turtle Attack under the same licence.
+
+The current GIF images are taken from Battle for Wesnoth: http://www.wesnoth.org/ which is licenced under the GPL licence: http://svn.gna.org/viewcvs/*checkout*/wesnoth/trunk/COPYING
+
+The intention is to replace the GIF images with original artwork in the native Turtle polygon format:
+http://docs.python.org/3.3/library/turtle.html#turtle.register_shape
+
+Until these images are replaced, the combined work of images and code must be licenced under the GPL version 2.
+
+Replacing the GIFs with polygons will also have other benefits since the polygons can then rotate and show their heading.
+
+Artwork submissions (i.e. the list of co-ordinates) along these lines will be very welcome.

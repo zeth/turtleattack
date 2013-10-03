@@ -1,6 +1,8 @@
 """
 This file is taken from the TurtlePower package.
 
+Copyright (c) 2013 Simon Davy
+
 https://github.com/AllTheWayDown/turtlepower/blob/master/turtlepower/world.py
 
 This file is included directly since the target audience of children
